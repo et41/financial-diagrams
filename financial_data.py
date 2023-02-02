@@ -36,5 +36,35 @@ def get_balance_sheet_total_assets(ticker: str):
             total_non_current_assets,
             total_assets]
 
+
 def get_balance_sheet_total_liabilities(ticker: str):
+    balance_data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
+    total_liabilities = balance_data["Total liabilities"]
+    total_current_liabilities = balance_data["Total current liabilities"]
+    total_non_current_liabilities = balance_data["Total non-current liabilities"]
+
+    accounts_payables = balance_data["Accounts payable"]
+    current_debt = balance_data["Current debt"]
+    current_deferred_liabilities = balance_data["Deferred revenues"]
+    other_current_liabilities = balance_data["Other current liabilities"]
+    print("cuurent lia. ", total_current_liabilities)
+    print("non curent lia", total_non_current_liabilities)
+
+    long_term_debt = balance_data["Long-term debt"]
+    other_liabilities_non_current = balance_data["Other long-term liabilities"]
+    other_payables_non_current = total_non_current_liabilities - long_term_debt - other_liabilities_non_current
+    print(total_non_current_liabilities, long_term_debt, other_liabilities_non_current, other_payables_non_current)
+
+    return [
+            long_term_debt,
+            other_payables_non_current,
+            other_liabilities_non_current,
+            accounts_payables,
+            current_debt,
+            current_deferred_liabilities,
+            other_current_liabilities,
+            total_non_current_liabilities,
+            total_current_liabilities,
+            total_liabilities,
+            ]
 
