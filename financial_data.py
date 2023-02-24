@@ -78,3 +78,38 @@ def get_balance_sheet_equity(ticker: str):
         balance_data["Total liabilities"]
         ]
 
+def get_all_data(ticker: str):
+    balance_data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
+    cash_and_equivalents = balance_data["Cash and cash equivalents"]
+    other_shortterm_investments = balance_data["Other short-term investments"]
+    cash_and_shortterm_investment = cash_and_equivalents + other_shortterm_investments
+
+    total_current_assets = balance_data["Total current assets"]
+    inventory = balance_data["Inventory"]
+    other_current_assets = balance_data["Other current assets"]
+
+    receviables = total_current_assets - inventory - other_current_assets - cash_and_equivalents - other_shortterm_investments
+    inventory = balance_data["Inventory"]
+
+    other_current_assets = balance_data["Other current assets"]
+    current_assets = receviables + cash_and_equivalents + other_shortterm_investments + inventory + other_current_assets
+    gross_ppe = balance_data["Gross property, plant and equipment"]
+    investment_and_advances = balance_data["Equity and other investments"]
+    other_non_current_assets = balance_data["Other long-term assets"]
+
+    total_non_current_assets = balance_data["Total non-current assets"]
+    total_assets = total_current_assets + total_non_current_assets
+    return [
+        cash_and_shortterm_investment,
+        receviables,
+        inventory,
+        other_current_assets,
+        current_assets,
+        gross_ppe,
+        investment_and_advances,
+        other_non_current_assets,
+        total_non_current_assets,
+        total_assets,
+        balance_data["Total stockholders' equity"],
+        balance_data["Total liabilities"]
+    ]
