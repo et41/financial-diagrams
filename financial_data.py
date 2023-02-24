@@ -1,5 +1,9 @@
 from openbb_terminal.sdk import openbb
 
+class DataBalanceSheet:
+    def __init__(self, ticker):
+        self.data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
+
 def get_balance_sheet_total_assets(ticker: str):
     print(ticker)
     balance_data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
@@ -34,10 +38,12 @@ def get_balance_sheet_total_assets(ticker: str):
             investment_and_advances,
             other_non_current_assets,
             total_non_current_assets,
-            total_assets]
+            total_assets,
+            ]
 
 
 def get_balance_sheet_total_liabilities(ticker: str):
+    print(openbb.stocks.fa.balance(ticker))
     balance_data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
     total_liabilities = balance_data["Total liabilities"]
     total_current_liabilities = balance_data["Total current liabilities"]
@@ -47,13 +53,10 @@ def get_balance_sheet_total_liabilities(ticker: str):
     current_debt = balance_data["Current debt"]
     current_deferred_liabilities = balance_data["Deferred revenues"]
     other_current_liabilities = balance_data["Other current liabilities"]
-    print("cuurent lia. ", total_current_liabilities)
-    print("non curent lia", total_non_current_liabilities)
 
     long_term_debt = balance_data["Long-term debt"]
     other_liabilities_non_current = balance_data["Other long-term liabilities"]
     other_payables_non_current = total_non_current_liabilities - long_term_debt - other_liabilities_non_current
-    print(total_non_current_liabilities, long_term_debt, other_liabilities_non_current, other_payables_non_current)
 
     return [
             long_term_debt,
@@ -67,4 +70,11 @@ def get_balance_sheet_total_liabilities(ticker: str):
             total_current_liabilities,
             total_liabilities,
             ]
+
+def get_balance_sheet_equity(ticker: str):
+    balance_data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
+    return [
+        balance_data["Total stockholders' equity"],
+        balance_data["Total liabilities"]
+        ]
 
