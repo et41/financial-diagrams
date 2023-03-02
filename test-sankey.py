@@ -25,33 +25,42 @@ data_obj = {
 }
 """
 
+all_data = get_all_data("AAPL")
+headers = ["Assets", "Liabilities", "Equities"]
+label_and_color = {
+    "Cash and Short Term Inv.": "rgb(43,160,45)",
+    "Receivables": "rgb(43,160,45)",
+    "Inventory": "rgb(43,160,45)",
+    "Other Current Assets":"rgb(43,160,45)",
+    "Current Assets": "rgb(43,160,45)",
+    "Net PPE" :"rgb(43,160,45)",
+    "Investment And Advances": "rgb(43,160,45)",
+    "Other Non-current Assets": "rgb(43,160,45)",
+    "Total Non-current Assets": "rgb(43,160,45)",
+    "Total Assets": "rgb(43,160,45)",
+    "Equities": "rgb(255,0,0)",
+    "Liabilities": "rgb(255,0,0)",
+}
+
 #data = get_sankey_for_assets(nodes_proportion, data_total_assets)
 data = dict(
         type="sankey",
         valueformat=".4s",
+  
         valuesuffix="B",
+        arrangement="snap",
         node=dict(
-            pad = 10,
-            thickness=30,
+            pad = 1,
+            thickness=20,
+            x = [0.1, 0.1, 0.1, 0.1, 0.3, 0.1, 0.1, 0.1, 0.3 , 0.5 , 0.52 , 0.52], # specify x positions
+            y = [ .8 , .8 , .6 , .6 , .4 , .4 , .3 , .3 , .2 , .2 , .1 , .1] ,# specify y positions
             line=dict(
                 width=3,
                 color="black"
             ),
-            label=[
-                "Cash and Short Term Inv.",
-                "Receivables",
-                "Inventory",
-                "Other Current Assets",
-                "Current Assets",
-                "Net PPE",
-                "Investment And Advances",
-                "Other Non-current Assets",
-                "Total Non-current Assets",
-                "Total Assets",
-                "Liabilities",
-                "Equities"
-                ],
-            color="rgb(43,160,45)"
+            label= list(label_and_color.keys()),
+            #color=["rgb(43,160,45)" if i < len(all_data) - 1 else "rgb(255,0,0)" for i in range(0,len(all_data) + 1)]
+            color = list(label_and_color.values()),
         ),
         link=dict(
             #source=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9],
@@ -59,15 +68,16 @@ data = dict(
             source=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9],
             target=[4, 4, 4, 4, 9, 8, 8, 8, 9, 10, 11],
             #value=list(data_obj.values()),
-            value = get_all_data("AAPL"),
-            color="rgb(153,206,154)"
+            value = all_data,
+            color=["rgb(155,206,154)" if i < len(all_data) - 2 else "rgb(255,255,255)" for i in range(0,len(all_data)) ]
         )
     )
 print(data)
+"""
 layout = dict(
     title="Apple's Cash Flow Statement",
-    width=1200,
-    height=800,
+    #width=1200,
+    #height=800,
     font=dict(
         size=10
     ),
@@ -75,18 +85,31 @@ layout = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
 )
+"""
 
-color_for_lines = ["rgb(153,206,154)", "rgb(153,206,154)",
-                   "rgb(153,206,154)", "rgb(153,206,154)",
-                   "rgb(153,206,154)", "rgb(153,206,154)",
-                   "rgb(153,206,154)", "rgb(153,206,154)",
-                   "rgb(153,206,154)",   "rgb(153,206,154)",
-                    "rgb(153,206,154)",
-                   ]
+layout = dict(
+    title = dict(
+        text = "Apple's Balance Sheet",
+        font = dict(
+            color = "rgb(0,0,0)",
+            family = "Times New Roman",
+            size = 18
+        )
+    ),
+    font = dict(
+        size = 10
+    ), 
+  
+    
+
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "rgba(0,0,0,0)",
+    margin = dict(t=50,r=50,b=100,l=100)
+)
 
 fig = go.Figure(data=data, layout=layout)
 fig.update_traces(
         textfont_size=14,
         link=dict(line=dict(width=2)),
-        link_color=color_for_lines)
+        )
 fig.show()

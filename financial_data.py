@@ -75,7 +75,6 @@ def get_balance_sheet_equity(ticker: str):
     balance_data = openbb.stocks.fa.balance(ticker)["2022-09-30"]
     return [
         balance_data["Total stockholders' equity"],
-        balance_data["Total liabilities"]
         ]
 
 def get_all_data(ticker: str):
@@ -93,7 +92,7 @@ def get_all_data(ticker: str):
 
     other_current_assets = balance_data["Other current assets"]
     current_assets = receviables + cash_and_equivalents + other_shortterm_investments + inventory + other_current_assets
-    gross_ppe = balance_data["Gross property, plant and equipment"]
+    gross_ppe = balance_data["Net property, plant and equipment"]
     investment_and_advances = balance_data["Equity and other investments"]
     other_non_current_assets = balance_data["Other long-term assets"]
 
@@ -109,7 +108,6 @@ def get_all_data(ticker: str):
         investment_and_advances,
         other_non_current_assets,
         total_non_current_assets,
-        total_assets,
         balance_data["Total stockholders' equity"],
         balance_data["Total liabilities"]
     ]
